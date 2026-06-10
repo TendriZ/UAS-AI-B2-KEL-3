@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import Navbar from '@/components/Navbar';
-import InputForm from '@/components/InputForm';
-import ResultCard from '@/components/ResultCard';
+import Navbar from '@/components/Navbar/Navbar';
+import InputForm from '@/components/InputForm/InputForm';
+import ResultCard from '@/components/ResultCard/ResultCard';
+import styles from './Home.module.css';
 
 export default function Home() {
   const [result, setResult] = useState(null);
@@ -39,50 +40,49 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-100">
-      <Navbar />
+  <div className={styles.page}>
+    <Navbar />
 
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">
-              🦐 TambakAI
-            </h1>
-            <p className="text-gray-600">
-              Sistem Kontrol Pemberian Makan Pada Tambak Udang dengan Fuzzy Logic
-            </p>
-          </div>
+    <main className={styles.main}>
+      <div className={styles.container}>
+        <div className={styles.hero}>
+          <h1 className={styles.title}>
+            🦐 TambakAI
+          </h1>
 
-          {/* Error Message */}
-          {error && (
-            <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
-              {error}
-            </div>
-          )}
-
-          {/* Input Form */}
-          <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">
-              Input Parameter Tambak
-            </h2>
-            <InputForm
-              onSubmit={handleCalculate}
-              loading={loading}
-            />
-          </div>
-
-          {/* Result Card */}
-          {result && (
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-semibold mb-4 text-gray-800">
-                Hasil Rekomendasi
-              </h2>
-              <ResultCard data={result} />
-            </div>
-          )}
+          <p className={styles.subtitle}>
+            Sistem Kontrol Pemberian Makan Pada Tambak Udang dengan Fuzzy Logic
+          </p>
         </div>
-      </main>
-    </div>
-  );
+
+        {error && (
+          <div className={styles.error}>
+            {error}
+          </div>
+        )}
+
+        <div className={styles.card}>
+          <h2 className={styles.cardTitle}>
+            Input Parameter Tambak
+          </h2>
+
+          <InputForm
+            onSubmit={handleCalculate}
+            loading={loading}
+          />
+        </div>
+
+        {result && (
+          <div className={styles.card}>
+            <h2 className={styles.cardTitle}>
+              Hasil Rekomendasi
+            </h2>
+
+            <ResultCard data={result} />
+          </div>
+        )}
+      </div>
+    </main>
+  </div>
+);
 }
