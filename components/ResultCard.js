@@ -50,6 +50,55 @@ export default function ResultCard({ data }) {
     doc.setFontSize(10);
     const lines = doc.splitTextToSize(data.penjelasan, 170);
     doc.text(lines, 20, yPos);
+    yPos += lines.length * 5 + 5;
+
+    // Detail Perhitungan Fuzzy (if available)
+    if (data.detail_perhitungan) {
+      yPos += 5;
+      doc.setFontSize(12);
+      doc.text('Detail Perhitungan Fuzzy (Sugeno):', 20, yPos);
+      yPos += 7;
+
+      // Fuzzifikasi
+      doc.setFontSize(10);
+      doc.text('1. Fuzzifikasi - Nilai Keanggotaan:', 25, yPos);
+      yPos += 5;
+
+      const fuzz = data.detail_perhitungan.fuzzifikasi.memberships;
+      doc.text(`pH - Asam: ${fuzz.ph.asam}, Normal: ${fuzz.ph.normal}, Basa: ${fuzz.ph.basa}`, 30, yPos);
+      yPos += 5;
+      doc.text(`Suhu - Dingin: ${fuzz.suhu.dingin}, Normal: ${fuzz.suhu.normal}, Panas: ${fuzz.suhu.panas}`, 30, yPos);
+      yPos += 5;
+      doc.text(`Cuaca - Cerah: ${fuzz.cuaca.cerah}, Berawan: ${fuzz.cuaca.berawan}, Hujan: ${fuzz.cuaca.hujan}, Badai: ${fuzz.cuaca.badai}`, 30, yPos);
+      yPos += 5;
+      doc.text(`Kepadatan - Rendah: ${fuzz.kepadatan.rendah}, Normal: ${fuzz.kepadatan.normal}, Tinggi: ${fuzz.kepadatan.tinggi}`, 30, yPos);
+      yPos += 5;
+      doc.text(`Usia - Benur: ${fuzz.usia.benur}, Pembesaran: ${fuzz.usia.pembesaran}, Panen: ${fuzz.usia.panen}`, 30, yPos);
+      yPos += 7;
+
+      // Rule Evaluation
+      doc.text(`2. Rule Evaluation - Aturan Aktif: ${data.detail_perhitungan.rule_evaluation.active_rules.length}/${data.detail_perhitungan.rule_evaluation.total_rules}`, 25, yPos);
+      yPos += 5;
+      data.detail_perhitungan.rule_evaluation.active_rules.forEach((rule, idx) => {
+        if (yPos > 270) {
+          doc.addPage();
+          yPos = 20;
+        }
+        doc.text(`   Rule ${idx + 1}: Strength=${rule.strength}, ${rule.reason}`, 30, yPos);
+        yPos += 4;
+      });
+      yPos += 5;
+
+      // Defuzzifikasi
+      if (data.detail_perhitungan.defuzifikasi.calculation) {
+        doc.text('3. Defuzzifikasi - Weighted Average:', 25, yPos);
+        yPos += 5;
+        const calc = data.detail_perhitungan.defuzifikasi.calculation;
+        doc.text(`Faktor Koreksi: ${calc.adjustment.result} (Weight: ${calc.adjustment.total_weight}, Sum: ${calc.adjustment.weighted_sum})`, 30, yPos);
+        yPos += 5;
+        doc.text(`Feeding Rate: ${calc.feeding_rate.result} (Weight: ${calc.feeding_rate.total_weight}, Sum: ${calc.feeding_rate.weighted_sum})`, 30, yPos);
+      }
+    }
 
     doc.save(`rekomendasi-tambak-${Date.now()}.pdf`);
   };
@@ -108,6 +157,172 @@ export default function ResultCard({ data }) {
           </div>
         </div>
       </div>
+
+      {/* Detail Perhitungan Fuzzy */}
+      {data.detail_perhitungan && (
+        <div className="border border-gray-200 rounded-lg p-4">
+          <h3 className="text-lg font-semibold mb-4 text-gray-800">📊 Detail Perhitungan Fuzzy (Sugeno)</h3>
+
+          {/* Step 1: Fuzzifikasi */}
+          <div className="mb-6">
+            <h4 className="font-semibold text-blue-700 mb-3">1. Fuzzifikasi (Konversi input ke nilai keanggotaan)</h4>
+            <div className="bg-blue-50 rounded-lg p-4 space-y-4">
+              {data.detail_perhitungan.fuzzifikasi && (
+                <>
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 mb-2">Input:</p>
+                    <div className="grid grid-cols-2 gap-2 text-sm bg-white rounded p-3">
+                      <div><span className="text-gray-600">pH Air:</span> <span className="font-semibold">{data.detail_perhitungan.fuzzifikasi.input.ph_air}</span></div>
+                      <div><span className="text-gray-600">Suhu Air:</span> <span className="font-semibold">{data.detail_perhitungan.fuzzifikasi.input.suhu_air}°C</span></div>
+                      <div><span className="text-gray-600">Cuaca:</span> <span className="font-semibold">{data.detail_perhitungan.fuzzifikasi.input.cuaca}</span></div>
+                      <div><span className="text-gray-600">Volume Air:</span> <span className="font-semibold">{data.detail_perhitungan.fuzzifikasi.input.volume_air} m³</span></div>
+                      <div><span className="text-gray-600">Jumlah Udang:</span> <span className="font-semibold">{data.detail_perhitungan.fuzzifikasi.input.jumlah_udang} ekor</span></div>
+                      <div><span className="text-gray-600">Usia Udang:</span> <span className="font-semibold">{data.detail_perhitungan.fuzzifikasi.input.usia_udang} hari</span></div>
+                      <div className="col-span-2"><span className="text-gray-600">Kepadatan:</span> <span className="font-semibold">{data.detail_perhitungan.fuzzifikasi.input.kepadatan} ekor/m³</span></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 mb-2">Nilai Keanggotaan (Membership Values):</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {/* pH */}
+                      <div className="bg-white rounded p-3">
+                        <p className="font-medium text-gray-800 mb-2">pH</p>
+                        <div className="text-sm space-y-1">
+                          <div className="flex justify-between"><span className="text-gray-600">Asam:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.ph.asam}</span></div>
+                          <div className="flex justify-between"><span className="text-gray-600">Normal:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.ph.normal}</span></div>
+                          <div className="flex justify-between"><span className="text-gray-600">Basa:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.ph.basa}</span></div>
+                        </div>
+                      </div>
+
+                      {/* Suhu */}
+                      <div className="bg-white rounded p-3">
+                        <p className="font-medium text-gray-800 mb-2">Suhu</p>
+                        <div className="text-sm space-y-1">
+                          <div className="flex justify-between"><span className="text-gray-600">Dingin:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.suhu.dingin}</span></div>
+                          <div className="flex justify-between"><span className="text-gray-600">Normal:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.suhu.normal}</span></div>
+                          <div className="flex justify-between"><span className="text-gray-600">Panas:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.suhu.panas}</span></div>
+                        </div>
+                      </div>
+
+                      {/* Cuaca */}
+                      <div className="bg-white rounded p-3">
+                        <p className="font-medium text-gray-800 mb-2">Cuaca</p>
+                        <div className="text-sm space-y-1">
+                          <div className="flex justify-between"><span className="text-gray-600">Cerah:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.cuaca.cerah}</span></div>
+                          <div className="flex justify-between"><span className="text-gray-600">Berawan:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.cuaca.berawan}</span></div>
+                          <div className="flex justify-between"><span className="text-gray-600">Hujan:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.cuaca.hujan}</span></div>
+                          <div className="flex justify-between"><span className="text-gray-600">Badai:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.cuaca.badai}</span></div>
+                        </div>
+                      </div>
+
+                      {/* Kepadatan */}
+                      <div className="bg-white rounded p-3">
+                        <p className="font-medium text-gray-800 mb-2">Kepadatan</p>
+                        <div className="text-sm space-y-1">
+                          <div className="flex justify-between"><span className="text-gray-600">Rendah:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.kepadatan.rendah}</span></div>
+                          <div className="flex justify-between"><span className="text-gray-600">Normal:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.kepadatan.normal}</span></div>
+                          <div className="flex justify-between"><span className="text-gray-600">Tinggi:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.kepadatan.tinggi}</span></div>
+                        </div>
+                      </div>
+
+                      {/* Usia */}
+                      <div className="bg-white rounded p-3">
+                        <p className="font-medium text-gray-800 mb-2">Usia</p>
+                        <div className="text-sm space-y-1">
+                          <div className="flex justify-between"><span className="text-gray-600">Benur:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.usia.benur}</span></div>
+                          <div className="flex justify-between"><span className="text-gray-600">Pembesaran:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.usia.pembesaran}</span></div>
+                          <div className="flex justify-between"><span className="text-gray-600">Panen:</span> <span className="font-mono font-semibold">{data.detail_perhitungan.fuzzifikasi.memberships.usia.panen}</span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Step 2: Rule Evaluation */}
+          <div className="mb-6">
+            <h4 className="font-semibold text-green-700 mb-3">2. Rule Evaluation (Evaluasi Aturan Fuzzy)</h4>
+            <div className="bg-green-50 rounded-lg p-4">
+              <p className="text-sm text-gray-600 mb-3">Total aturan: {data.detail_perhitungan.rule_evaluation.total_rules} | Aturan aktif (fired): {data.detail_perhitungan.rule_evaluation.active_rules.length}</p>
+              <div className="space-y-2">
+                {data.detail_perhitungan.rule_evaluation.active_rules.map((rule, idx) => (
+                  <div key={idx} className="bg-white rounded p-3 border-l-4 border-green-500">
+                    <div className="flex justify-between items-start mb-1">
+                      <span className="font-mono text-sm font-semibold text-green-700">Rule strength: {rule.strength}</span>
+                      <div className="text-right text-xs">
+                        <span className="text-gray-600">Adj: </span>
+                        <span className="font-mono">{rule.adjustment}</span>
+                        {rule.feeding_rate !== '-' && (
+                          <>
+                            <span className="text-gray-600 ml-2">FR: </span>
+                            <span className="font-mono">{rule.feeding_rate}</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-700">{rule.reason}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Step 3: Defuzzifikasi */}
+          <div>
+            <h4 className="font-semibold text-purple-700 mb-3">3. Defuzzifikasi (Sugeno - Weighted Average)</h4>
+            <div className="bg-purple-50 rounded-lg p-4">
+              {data.detail_perhitungan.defuzifikasi.calculation ? (
+                <div className="space-y-4">
+                  <p className="text-sm text-gray-600 italic">{data.detail_perhitungan.defuzifikasi.method}</p>
+
+                  {/* Adjustment Calculation */}
+                  <div className="bg-white rounded p-4">
+                    <p className="font-medium text-gray-800 mb-3">Faktor Koreksi (Adjustment):</p>
+                    <div className="text-sm space-y-2 font-mono">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Total Weight (Σ strength):</span>
+                        <span className="font-semibold">{data.detail_perhitungan.defuzifikasi.calculation.adjustment.total_weight}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Weighted Sum (Σ adj × strength):</span>
+                        <span className="font-semibold">{data.detail_perhitungan.defuzifikasi.calculation.adjustment.weighted_sum}</span>
+                      </div>
+                      <div className="flex justify-between border-t pt-2 mt-2">
+                        <span className="text-gray-600">Result (Weighted Sum / Total Weight):</span>
+                        <span className="font-bold text-purple-700">{data.detail_perhitungan.defuzifikasi.calculation.adjustment.result}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Feeding Rate Calculation */}
+                  <div className="bg-white rounded p-4">
+                    <p className="font-medium text-gray-800 mb-3">Feeding Rate:</p>
+                    <div className="text-sm space-y-2 font-mono">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Total Weight (Σ strength):</span>
+                        <span className="font-semibold">{data.detail_perhitungan.defuzifikasi.calculation.feeding_rate.total_weight}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Weighted Sum (Σ FR × strength):</span>
+                        <span className="font-semibold">{data.detail_perhitungan.defuzifikasi.calculation.feeding_rate.weighted_sum}</span>
+                      </div>
+                      <div className="flex justify-between border-t pt-2 mt-2">
+                        <span className="text-gray-600">Result (Weighted Sum / Total Weight):</span>
+                        <span className="font-bold text-purple-700">{data.detail_perhitungan.defuzifikasi.calculation.feeding_rate.result}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-gray-600 italic">Tidak ada aturan yang aktif</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Explanation */}
       <div className="border border-gray-200 rounded-lg p-4">
