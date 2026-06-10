@@ -9,8 +9,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Target Users
 Shrimp farm owners (petambak udang) who need daily feeding recommendations.
 
+### Target Species: Udang Vannamei
+**Fokus:** Sistem ini dirancang khusus untuk budidaya **Udang Vannamei** (*Litopenaeus vannamei*)
+- FCR (Feed Conversion Ratio): 1.2
+- Growth Rate: 0.0015/hari
+
 ### Core Functionality
-- **Inputs (7 parameters)**: pH levels, water temperature, weather conditions, shrimp species, shrimp count, shrimp age, water volume
+- **Inputs (6 parameters)**: pH levels, water temperature, weather conditions, shrimp count, shrimp age, water volume
 - **Outputs**: Feed quantity (kg), feeding schedules, and explanations/justifications based on fuzzy logic analysis
 
 ### AI Method: Sugeno Fuzzy Logic
@@ -22,17 +27,18 @@ The system uses the **Sugeno method** (Sugeno-type fuzzy inference system) to de
 
 ## System Design
 
-### Input Parameters (7 total)
+### Input Parameters (6 total)
 
 | Input | Type | Description |
 |-------|------|-------------|
-| pH Air | Number (decimal) | Water acidity level |
-| Suhu Air | Number (decimal, °C) | Water temperature |
+| pH Air | Number (decimal) | Water acidity level (0-14) |
+| Suhu Air | Number (decimal, °C) | Water temperature (0-50°C) |
 | Cuaca | Dropdown | Weather: Cerah, Berawan, Hujan, Badai |
 | Volume Air | Number (decimal, m³) | Pond water volume |
-| Jenis Udang | Dropdown | Species: Vannamei, Monodon, etc. |
 | Jumlah Udang | Number (integer) | Estimated current shrimp count |
-| Usia Udang | Number (integer, hari) | Shrimp age in days |
+| Usia Udang | Number (integer, hari) | Shrimp age in days (1-365) |
+
+> **Note:** Jenis udang tetap **Vannamei** dengan parameter FCR=1.2 dan growth_rate=0.0015
 
 ### Output Structure
 
@@ -60,7 +66,6 @@ INPUT → FUZZIFICATION → RULE EVALUATION → DEFUZZIFICATION → OUTPUT
 - Cuaca: {Cerah, Berawan, Hujan, Badai}
 - Kepadatan (dihitung dari jml/volume): {Rendah, Normal, Tinggi}
 - Usia: {Benur, Pembesaran, Panen}
-- Jenis: {Vannamei, Monodon, Lainnya}
 
 **Calculation Formula:**
 ```

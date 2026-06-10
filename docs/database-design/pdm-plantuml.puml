@@ -1,0 +1,256 @@
+@startuml PDM-TambakAI
+!theme plain
+hide empty members
+
+title Physical Data Model (PDM) - TambakAI PostgreSQL
+subtitle Database Schema v2.0 - Vannamei Only
+
+' ============================================
+' TABLES WITH COLUMNS AND DATA TYPES
+' ============================================
+
+entity "users\n(TABLE)" as users {
+  * id : UUID <<generated>>
+  * --
+  * username : VARCHAR(50) <<UK>>
+  * email : VARCHAR(100) <<UK>>
+  * password_hash : VARCHAR(255)
+  * full_name : VARCHAR(100)
+  * role : user_role_enum <<DEFAULT: USER>>
+  * is_active : BOOLEAN <<DEFAULT: TRUE>>
+  * email_verified : BOOLEAN <<DEFAULT: FALSE>>
+  * last_login_at : TIMESTAMP
+  * created_at : TIMESTAMP <<DEFAULT: NOW()>>
+  * updated_at : TIMESTAMP <<DEFAULT: NOW()>>
+  --
+  ++ idx_users_email
+  ++ idx_users_username
+  ++ idx_users_is_active
+}
+
+entity "tambak\n(TABLE)" as tambak {
+  * id : UUID <<generated>>
+  * --
+  * user_id : UUID <<FK>>
+  * name : VARCHAR(100)
+  * description : TEXT
+  * volume_air : DECIMAL(10,2) <<CHECK: > 0>>
+  * location_lat : DECIMAL(10,8)
+  * location_long : DECIMAL(11,8)
+  * deleted_at : TIMESTAMP <<soft delete>>
+  * created_at : TIMESTAMP <<DEFAULT: NOW()>>
+  * updated_at : TIMESTAMP <<DEFAULT: NOW()>>
+  --
+  ++ idx_tambak_user_id
+  ++ idx_tambak_deleted_at
+}
+
+entity "species_types\n(TABLE)" as species_types {
+  * id : UUID <<generated>>
+  * --
+  * nama : VARCHAR(50) <<UK>>
+  * nama_ilmiah : VARCHAR(100)
+  * fcr : DECIMAL(3,2)
+  * growth_rate : DECIMAL(5,4)
+  * deskripsi : TEXT
+  * created_at : TIMESTAMP <<DEFAULT: NOW()>>
+}
+
+entity "recommendations\n(TABLE)" as recommendations {
+  * id : UUID <<generated>>
+  * --
+  * user_id : UUID <<FK>>
+  * tambak_id : UUID <<FK nullable>>
+  * species_id : UUID <<FK nullable>>
+  * --
+  * ph_air : DECIMAL(4,2) <<CHECK: 0-14>>
+  * suhu_air : DECIMAL(5,2) <<CHECK: 0-50>>
+  * cuaca : cuaca_enum
+  * volume_air : DECIMAL(10,2)
+  * jumlah_udang : INTEGER <<CHECK: > 0>>
+  * usia_udang : INTEGER <<CHECK: 1-365>>
+  * --
+  * kuantitas_pakan : DECIMAL(10,2)
+  * jadwal_pemberian : JSONB
+  * penjelasan : TEXT
+  * faktor_koreksi : DECIMAL(4,3)
+  * biomassa_kg : DECIMAL(10,2)
+  * feeding_rate_persen : DECIMAL(5,2)
+  * notes : TEXT
+  * --
+  * created_at : TIMESTAMP <<DEFAULT: NOW()>>
+  --
+  ++ idx_recommendations_user_id
+  ++ idx_recommendations_tambak_id
+  ++ idx_recommendations_created_at
+  ++ idx_recommendations_species_id
+}
+
+entity "feeding_logs\n(TABLE)" as feeding_logs {
+  * id : UUID <<generated>>
+  * --
+  * recommendation_id : UUID <<FK>>
+  * tanggal : DATE
+  * waktu_jadwal : VARCHAR(5)
+  * jumlah_rekomendasi : DECIMAL(10,2)
+  * jumlah_aktual : DECIMAL(10,2)
+  * selisih : DECIMAL(10,2)
+  * catatan : TEXT
+  * created_at : TIMESTAMP <<DEFAULT: NOW()>>
+}
+
+entity "audit_logs\n(TABLE)" as audit_logs {
+  * id : UUID <<generated>>
+  * --
+  * user_id : UUID <<FK nullable>>
+  * action : VARCHAR(50)
+  * table_name : VARCHAR(50)
+  * record_id : UUID
+  * old_data : JSONB
+  * new_data : JSONB
+  * ip_address : VARCHAR(45)
+  * user_agent : TEXT
+  * created_at : TIMESTAMP <<DEFAULT: NOW()>>
+  --
+  ++ idx_audit_logs_user_id
+  ++ idx_audit_logs_created_at
+}
+
+' ============================================
+' FOREIGN KEY RELATIONSHIPS
+' ============================================
+
+users ||--o{ tambak : "CASCADE\nuser_id"
+users ||--o{ recommendations : "CASCADE\nuser_id"
+users ||--o{ audit_logs : "SET NULL\nuser_id"
+
+tambak ||--o{ recommendations : "SET NULL\ntambak_id"
+species_types ||--o{ recommendations : "species_id"
+recommendations ||--o{ feeding_logs : "CASCADE\nrecommendation_id"
+
+' ============================================
+' ENUMS
+' ============================================
+
+enum "cuaca_enum" as cuaca_enum {
+  Cerah
+  Berawan
+  Hujan
+  Badai
+}
+
+enum "user_role_enum" as user_role_enum {
+  USER
+  ADMIN
+}
+
+cuaca_enum .. recommendations : "cuaca"
+user_role_enum .. users : "role"
+
+' ============================================
+' VIEWS
+' ============================================
+
+entity "user_summary\n(VIEW)" as user_summary {
+  id : UUID
+  username : VARCHAR
+  email : VARCHAR
+  full_name : VARCHAR
+  role : user_role_enum
+  is_active : BOOLEAN
+  total_tambak : INTEGER
+  total_recommendations : INTEGER
+  created_at : TIMESTAMP
+}
+
+entity "recommendation_details\n(VIEW)" as recommendation_details {
+  id : UUID
+  created_at : TIMESTAMP
+  username : VARCHAR
+  email : VARCHAR
+  tambak_name : VARCHAR
+  ph_air : DECIMAL
+  suhu_air : DECIMAL
+  cuaca : VARCHAR
+  species_name : VARCHAR
+  jumlah_udang : INTEGER
+  usia_udang : INTEGER
+  kuantitas_pakan : DECIMAL
+  faktor_koreksi : DECIMAL
+  biomassa_kg : DECIMAL
+}
+
+' ============================================
+' TRIGGERS & FUNCTIONS
+' ============================================
+
+package "Functions & Triggers" {
+  rectangle "update_updated_at_column()" as func1 {
+    Trigger: BEFORE UPDATE
+    Tables: users, tambak
+  }
+}
+
+func1 -[hidden]-> users
+func1 -[hidden]-> tambak
+
+' ============================================
+' NOTES
+' ============================================
+
+note right of users
+  <b>Cascade Delete</b>
+  User deletion removes all
+  related tambak and
+  recommendations
+end note
+
+note right of tambak
+  <b>Soft Delete</b>
+  Uses deleted_at
+  timestamp instead of
+  hard delete
+end note
+
+note right of recommendations
+  <b>Snapshot Data</b>
+  Input parameters are stored
+  for historical reference
+  even if source data changes
+end note
+
+note right of species_types
+  <b>Vannamei Only</b>
+  Pre-populated with:
+  - Vannamei (FCR: 1.2)
+
+  Parameter tetap untuk
+  Litopenaeus vannamei
+end note
+
+note bottom of audit_logs
+  <b>Audit Trail</b>
+  Tracks all CREATE,
+  UPDATE, DELETE
+  operations for
+  compliance
+end note
+
+' ============================================
+' LEGEND
+' ============================================
+
+legend right
+  <b>Legend:</b>
+  |
+  |<#Back-light-green>|\bu PK/b (Primary Key) |
+  |<#Back-light-blue>|\bu FK/b (Foreign Key) |
+  |<#Back-light-cyan>|\bu UK/b (Unique Key) |
+  |<#Back-light-pink>|\bu CHECK/b (Constraint) |
+  |
+  |<b>Indexes:</b> ++
+  |<b>Default:</b> <<DEFAULT>>
+  |<b>Generated:</b> <<generated>>
+end legend
+
+@enduml

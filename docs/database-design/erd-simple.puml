@@ -1,0 +1,67 @@
+@startuml ERD-TambakAI-Simple
+!theme plain
+hide empty members
+skinparam linetype ortho
+
+title ERD - TambakAI (Simplified)
+subtitle Entity Relationship Diagram
+
+entity "USERS" as u {
+  +id [PK]
+  --
+  username
+  email
+  full_name
+  role
+}
+
+entity "TAMBAK" as t {
+  +id [PK]
+  --
+  name
+  volume_air
+  location_lat
+  location_long
+}
+
+entity "SPECIES_TYPES" as s {
+  +id [PK]
+  --
+  nama
+  nama_ilmiah
+  fcr
+  growth_rate
+}
+
+entity "RECOMMENDATIONS" as r {
+  +id [PK]
+  --
+  ph_air
+  suhu_air
+  cuaca
+  jumlah_udang
+  usia_udang
+  kuantitas_pakan
+}
+
+u ||--o{ t : "1:N"
+u ||--o{ r : "1:N"
+t ||--o{ r : "1:N"
+s ||--o{ r : "1:N"
+
+note right of u
+  <b>USER</b>
+  Pengguna sistem
+  - USER: Petambak
+  - ADMIN: Admin
+end note
+
+note right of r
+  <b>RECOMMENDATION</b>
+  Hasil perhitungan
+  Fuzzy Logic
+  - Input: 7 parameter
+  - Output: Pakan harian
+end note
+
+@enduml

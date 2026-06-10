@@ -1,12 +1,19 @@
 /**
  * POST /api/recommendations/calculate
  * Calculate feed recommendation - works for both authenticated and guest users
+ * Fokus: Udang Vannamei
  */
 
 import { NextResponse } from 'next/server';
 import { calculate } from '@/lib/fuzzy/fuzzyLogic.js';
 import { getAuthUser } from '@/lib/auth.js';
 import { calculateSchema } from '@/lib/utils/schemas.js';
+
+// Parameter Vannamei (konstan)
+const VANNAMEI_PARAMS = {
+  fcr: 1.2,
+  growth_rate: 0.0015
+};
 
 export async function POST(request) {
   try {
@@ -24,20 +31,7 @@ export async function POST(request) {
       );
     }
 
-    // Use default species data based on jenis_udang or species_id
-    let speciesData = null;
-    let jenis_udang = body.jenis_udang || 'Vannamei';
-
-    // Default species data from hardcoded values
-    const DEFAULT_SPECIES = {
-      'Vannamei': { fcr: 1.2, growth_rate: 0.0015 },
-      'Monodon': { fcr: 1.5, growth_rate: 0.0012 },
-      'Lainnya': { fcr: 1.4, growth_rate: 0.0013 }
-    };
-
-    speciesData = DEFAULT_SPECIES[jenis_udang] || DEFAULT_SPECIES['Vannamei'];
-
-    // Calculate using fuzzy logic
+    // Calculate using fuzzy logic (Vannamei)
     const result = calculate(
       {
         ph_air: value.ph_air,
@@ -45,10 +39,9 @@ export async function POST(request) {
         cuaca: value.cuaca,
         volume_air: value.volume_air,
         jumlah_udang: value.jumlah_udang,
-        usia_udang: value.usia_udang,
-        jenis_udang: jenis_udang
+        usia_udang: value.usia_udang
       },
-      speciesData
+      VANNAMEI_PARAMS
     );
 
     // Save to database only if user is authenticated
@@ -58,8 +51,9 @@ export async function POST(request) {
       const Recommendation = (await import('@/lib/models/Recommendation.js')).default;
       const SpeciesTypes = (await import('@/lib/models/SpeciesTypes.js')).default;
 
+      // Get Vannamei species ID
       let species_id = null;
-      const species = await SpeciesTypes.findByName(jenis_udang);
+      const species = await SpeciesTypes.findByName('Vannamei');
       if (species) {
         species_id = species.id;
       }
@@ -91,7 +85,7 @@ export async function POST(request) {
         id: savedRecommendation?.id,
         created_at: savedRecommendation?.created_at,
         is_guest: !user,
-        species_name: jenis_udang,
+        species_name: 'Vannamei',
         ...result
       }
     }, { status: 201 });

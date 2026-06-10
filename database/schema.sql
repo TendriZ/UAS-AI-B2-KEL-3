@@ -10,7 +10,6 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- ENUMS for data integrity
 -- ============================================
 CREATE TYPE cuaca_enum AS ENUM ('Cerah', 'Berawan', 'Hujan', 'Badai');
-CREATE TYPE jenis_udang_enum AS ENUM ('Vannamei', 'Monodon', 'Lainnya');
 CREATE TYPE user_role_enum AS ENUM ('USER', 'ADMIN');
 
 -- ============================================
@@ -70,11 +69,9 @@ CREATE TABLE species_types (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insert default species data
+-- Insert default species data (Vannamei only)
 INSERT INTO species_types (nama, nama_ilmiah, fcr, growth_rate, deskripsi) VALUES
-('Vannamei', 'Litopenaeus vannamei', 1.2, 0.0015, 'Udang vanamei - spesies paling populer'),
-('Monodon', 'Penaeus monodon', 1.5, 0.0012, 'Udang tiger windu - ukuran besar'),
-('Lainnya', 'Other species', 1.4, 0.0013, 'Spesies udang lainnya');
+('Vannamei', 'Litopenaeus vannamei', 1.2, 0.0015, 'Udang vannamei - spesies utama untuk budidaya');
 
 -- ============================================
 -- RECOMMENDATIONS TABLE

@@ -1,35 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { CUACA } from '@/lib/utils/schemas';
 
 export default function InputForm({ onSubmit, loading }) {
-  const [speciesList, setSpeciesList] = useState([]);
   const [formData, setFormData] = useState({
     ph_air: '',
     suhu_air: '',
     cuaca: 'Cerah',
     volume_air: '',
-    jenis_udang: 'Vannamei', // Changed to use species name directly
     jumlah_udang: '',
     usia_udang: '',
     notes: ''
   });
 
-  useEffect(() => {
-    fetchSpecies();
-  }, []);
-
-  const fetchSpecies = async () => {
-    try {
-      const res = await fetch('/api/species');
-      const data = await res.json();
-      if (data.success) {
-        setSpeciesList(data.data);
-      }
-    } catch (error) {
-      console.error('Failed to fetch species:', error);
-    }
+  // Parameter Vannamei (konstan)
+  const VANNAMEI_INFO = {
+    nama: 'Vannamei',
+    nama_ilmiah: 'Litopenaeus vannamei',
+    fcr: 1.2,
+    growth_rate: 0.0015
   };
 
   const handleSubmit = async (e) => {
@@ -68,7 +58,6 @@ export default function InputForm({ onSubmit, loading }) {
       suhu_air: suhu,
       cuaca: formData.cuaca,
       volume_air: volume,
-      jenis_udang: formData.jenis_udang,
       jumlah_udang: jumlah,
       usia_udang: usia,
       notes: formData.notes
@@ -84,6 +73,19 @@ export default function InputForm({ onSubmit, loading }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Vannamei Info Card */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="flex items-center gap-3">
+          <span className="text-3xl">🦐</span>
+          <div>
+            <h3 className="font-semibold text-blue-800">{VANNAMEI_INFO.nama} ({VANNAMEI_INFO.nama_ilmiah})</h3>
+            <p className="text-sm text-blue-600">
+              FCR: {VANNAMEI_INFO.fcr} | Growth Rate: {(VANNAMEI_INFO.growth_rate * 100).toFixed(2)}%
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Grid for inputs */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* pH Air */}
@@ -156,36 +158,6 @@ export default function InputForm({ onSubmit, loading }) {
           />
         </div>
 
-        {/* Jenis Udang */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Jenis Udang
-          </label>
-          <select
-            name="jenis_udang"
-            value={formData.jenis_udang}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            required
-          >
-            {speciesList.length === 0 ? (
-              <option value="Vannamei">Vannamei</option>
-            ) : (
-              speciesList.map((species) => (
-                <option key={species.id} value={species.nama}>
-                  {species.nama} {species.nama_ilmiah ? `(${species.nama_ilmiah})` : ''}
-                </option>
-              ))
-            )}
-          </select>
-          {speciesList.length > 0 && (
-            <p className="text-xs text-gray-500 mt-1">
-              FCR: {speciesList.find(s => s.nama === formData.jenis_udang)?.fcr} |
-              Growth: {(speciesList.find(s => s.nama === formData.jenis_udang)?.growth_rate * 100).toFixed(2)}%
-            </p>
-          )}
-        </div>
-
         {/* Jumlah Udang */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -203,7 +175,7 @@ export default function InputForm({ onSubmit, loading }) {
         </div>
 
         {/* Usia Udang */}
-        <div className="md:col-span-2">
+        <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Usia Udang (hari)
           </label>

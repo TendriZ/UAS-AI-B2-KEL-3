@@ -1,0 +1,126 @@
+@startuml CDM-TambakAI
+!theme plain
+hide empty members
+
+title Conceptual Data Model (CDM) - TambakAI
+subtitle Sistem Kontrol Pemberian Makan Pada Tambak Udang Vannamei
+
+' ============================================
+' ENTITIES
+' ============================================
+
+entity "User\n(Pengguna)" as user {
+  * id : UUID
+  * --
+  * username
+  * email
+  * password
+  * nama lengkap
+  * role
+}
+
+entity "Tambak\n(Kolam Udang)" as tambak {
+  * id : UUID
+  * --
+  * nama tambak
+  * deskripsi
+  * volume air
+  * lokasi (GPS)
+}
+
+entity "Species\n(Vannamei Parameter)" as species {
+  * id : UUID
+  * --
+  * nama: Vannamei
+  * nama ilmiah
+  * FCR: 1.2
+  * growth rate
+  * deskripsi
+}
+
+entity "Recommendation\n(Rekomendasi Pakan)" as recommendation {
+  * id : UUID
+  * --
+  * parameter input
+  * hasil perhitungan
+  * jadwal pemberian
+  * analisis
+}
+
+entity "Feeding Log\n(Catatan Pemberian)" as feeding_log {
+  * id : UUID
+  * --
+  * tanggal
+  * waktu
+  * jumlah rekomendasi
+  * jumlah aktual
+  * selisih
+}
+
+entity "Audit Log\n(Log Aktivitas)" as audit_log {
+  * id : UUID
+  * --
+  * aksi
+  * nama tabel
+  * data lama
+  * data baru
+  * IP address
+}
+
+' ============================================
+' RELATIONSHIPS
+' ============================================
+
+' User ke Tambak (One to Many)
+user ||--o{ tambak : "memiliki\nsatu atau lebih"
+
+' User ke Recommendation (One to Many)
+user ||--o{ recommendation : "membuat\nsatu atau lebih"
+
+' Tambak ke Recommendation (One to Many)
+tambak ||--o{ recommendation : "memiliki\nriwayat rekomendasi"
+
+' Species ke Recommendation (One to Many)
+species ||--o{ recommendation : "digunakan untuk\nperhitungan"
+
+' Recommendation ke Feeding Log (One to Many)
+recommendation ||--o{ feeding_log : "dipelacari\npakan aktual"
+
+' User ke Audit Log (One to Many)
+user ||--o{ audit_log : "melakukan\naktivitas"
+
+' ============================================
+' NOTES
+' ============================================
+
+note right of user
+  Pengguna sistem
+  - USER: Petambak
+  - ADMIN: Administrator
+end note
+
+note right of tambak
+  Data tambak udang
+  dengan soft delete
+end note
+
+note right of recommendation
+  Menyimpan snapshot
+  parameter dan hasil
+  perhitungan fuzzy logic
+end note
+
+note right of species
+  <b>Vannamei Only</b>
+  Parameter tetap untuk
+  Litopenaeus vannamei:
+  - FCR: 1.2
+  - Growth Rate: 0.0015
+end note
+
+legend right
+  |<#Back-light-cyan>| Mandatory (PK/FK) |
+  |<#Back-light-yellow>| Optional |
+end legend
+
+@enduml
