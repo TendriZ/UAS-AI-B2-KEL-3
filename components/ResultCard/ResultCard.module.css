@@ -1,0 +1,183 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.heroCard {
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #06b6d4
+    );
+
+  color: white;
+
+  border-radius: 28px;
+
+  padding: 32px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.heroLabel {
+  opacity: .8;
+  margin-bottom: 8px;
+}
+
+.heroValue {
+  font-size: 4rem;
+  font-weight: 800;
+}
+
+.heroIcon {
+  font-size: 4rem;
+}
+
+.section {
+  background: rgba(255,255,255,.85);
+
+  backdrop-filter: blur(20px);
+
+  border-radius: 24px;
+
+  padding: 24px;
+
+  border: 1px solid rgba(255,255,255,.8);
+
+  box-shadow:
+    0 10px 30px rgba(15,23,42,.06);
+}
+
+.sectionTitle {
+  margin-bottom: 20px;
+
+  font-size: 1.2rem;
+  font-weight: 700;
+
+  color: #0f172a;
+}
+
+.scheduleList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.scheduleItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #f8fafc;
+
+  padding: 16px;
+  border-radius: 14px;
+}
+
+.scheduleLeft {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.emoji {
+  font-size: 1.5rem;
+}
+
+.percent {
+  margin-left: 8px;
+  color: #64748b;
+}
+
+.analysisGrid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit,minmax(180px,1fr));
+
+  gap: 16px;
+}
+
+.metric {
+  background: #f8fafc;
+
+  padding: 18px;
+
+  border-radius: 14px;
+}
+
+.metric span {
+  display: block;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.metric strong {
+  font-size: 1.2rem;
+}
+
+.fuzzyInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.step {
+  display: flex;
+  gap: 16px;
+}
+
+.stepBadge {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  background: #2563eb;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+}
+
+.explanation {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.explanation pre {
+  white-space: pre-wrap;
+  font-family: inherit;
+  line-height: 1.7;
+  color: #334155;
+}
+
+.exportButton {
+  border: none;
+  cursor: pointer;
+
+  padding: 16px;
+
+  border-radius: 16px;
+
+  color: white;
+  font-weight: 600;
+
+  background:
+    linear-gradient(
+      135deg,
+      #16a34a,
+      #22c55e
+    );
+}
+
+.exportButton:hover {
+  transform: translateY(-2px);
+}

@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/Navbar/Navbar';
+import styles from './page.module.css';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -74,123 +75,163 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-100">
-      <Navbar />
+  <div className={styles.page}>
+    <Navbar />
 
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">Profile Saya</h1>
+    <main className={styles.container}>
+      <div className={styles.profileWrapper}>
+        <div className={styles.profileHero}>
+          <div className={styles.avatar}>
+            {user?.username?.charAt(0).toUpperCase()}
+          </div>
 
-          {message && (
-            <div className={`mb-4 p-3 rounded-lg ${
-              message.includes('berhasil')
-                ? 'bg-green-100 text-green-700'
-                : 'bg-red-100 text-red-700'
-            }`}>
-              {message}
-            </div>
-          )}
+          <div>
+            <h1 className={styles.title}>
+              Profile Saya
+            </h1>
 
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            {!editing ? (
-              <div className="space-y-4">
-                <div>
-                  <p className="text-sm text-gray-600">Username</p>
-                  <p className="font-semibold text-gray-800">{user?.username}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Email</p>
-                  <p className="font-semibold text-gray-800">{user?.email}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Nama Lengkap</p>
-                  <p className="font-semibold text-gray-800">
-                    {user?.full_name || '-'}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Terdaftar Sejak</p>
-                  <p className="font-semibold text-gray-800">
-                    {new Date(user?.created_at).toLocaleDateString('id-ID', {
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric'
-                    })}
-                  </p>
-                </div>
-                <button
-                  onClick={() => setEditing(true)}
-                  className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                >
-                  Edit Profile
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleUpdate} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Username (tidak dapat diubah)
-                  </label>
-                  <input
-                    type="text"
-                    value={user?.username}
-                    disabled
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nama Lengkap
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.full_name}
-                    onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    maxLength={100}
-                  />
-                </div>
-
-                <div className="flex gap-3">
-                  <button
-                    type="submit"
-                    className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-                  >
-                    Simpan Perubahan
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setEditing(false);
-                      setFormData({
-                        full_name: user?.full_name || '',
-                        email: user?.email
-                      });
-                    }}
-                    className="px-6 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition"
-                  >
-                    Batal
-                  </button>
-                </div>
-              </form>
-            )}
+            <p className={styles.subtitle}>
+              Kelola informasi akun TambakAI Anda
+            </p>
           </div>
         </div>
-      </main>
-    </div>
-  );
-}
+
+        {message && (
+          <div
+            className={
+              message.includes("berhasil")
+                ? styles.successAlert
+                : styles.errorAlert
+            }
+          >
+            {message}
+          </div>
+        )}
+
+        <div className={styles.card}>
+          {!editing ? (
+            <div className={styles.infoGrid}>
+              <div className={styles.infoItem}>
+                <span>Username</span>
+                <strong>{user?.username}</strong>
+              </div>
+
+              <div className={styles.infoItem}>
+                <span>Email</span>
+                <strong>{user?.email}</strong>
+              </div>
+
+              <div className={styles.infoItem}>
+                <span>Nama Lengkap</span>
+                <strong>
+                  {user?.full_name || "-"}
+                </strong>
+              </div>
+
+              <div className={styles.infoItem}>
+                <span>Terdaftar Sejak</span>
+                <strong>
+                  {new Date(
+                    user?.created_at
+                  ).toLocaleDateString("id-ID", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </strong>
+              </div>
+
+              <button
+                onClick={() => setEditing(true)}
+                className={styles.primaryButton}
+              >
+                Edit Profile
+              </button>
+            </div>
+          ) : (
+            <form
+              onSubmit={handleUpdate}
+              className={styles.form}
+            >
+              <div className={styles.field}>
+                <label>
+                  Username
+                </label>
+
+                <input
+                  type="text"
+                  value={user?.username}
+                  disabled
+                  className={styles.disabledInput}
+                />
+              </div>
+
+              <div className={styles.field}>
+                <label>
+                  Email
+                </label>
+
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      email: e.target.value,
+                    })
+                  }
+                  className={styles.input}
+                  required
+                />
+              </div>
+
+              <div className={styles.field}>
+                <label>
+                  Nama Lengkap
+                </label>
+
+                <input
+                  type="text"
+                  value={formData.full_name}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      full_name: e.target.value,
+                    })
+                  }
+                  className={styles.input}
+                  maxLength={100}
+                />
+              </div>
+
+              <div className={styles.actions}>
+                <button
+                  type="submit"
+                  className={styles.saveButton}
+                >
+                  Simpan
+                </button>
+
+                <button
+                  type="button"
+                  className={styles.cancelButton}
+                  onClick={() => {
+                    setEditing(false);
+
+                    setFormData({
+                      full_name:
+                        user?.full_name || "",
+                      email: user?.email,
+                    });
+                  }}
+                >
+                  Batal
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+    </main>
+  </div>
+);}
