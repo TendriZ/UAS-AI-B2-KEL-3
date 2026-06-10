@@ -6,7 +6,7 @@
 import { NextResponse } from 'next/server';
 import { calculate } from '@/lib/fuzzy/fuzzyLogic.js';
 import { getAuthUser } from '@/lib/auth.js';
-import { calculateSchema, calculateSchemaLegacy } from '@/lib/utils/schemas.js';
+import { calculateSchema } from '@/lib/utils/schemas.js';
 
 export async function POST(request) {
   try {
@@ -14,12 +14,8 @@ export async function POST(request) {
     const user = await getAuthUser();
     const body = await request.json();
 
-    // Determine if using new schema (species_id) or legacy (jenis_udang)
-    const isLegacy = body.jenis_udang !== undefined;
-    const schemaToUse = isLegacy ? calculateSchemaLegacy : calculateSchema;
-
     // Validate input
-    const { error, value } = schemaToUse.validate(body);
+    const { error, value } = calculateSchema.validate(body);
     if (error) {
       console.log('Validation error:', error.details);
       return NextResponse.json(
