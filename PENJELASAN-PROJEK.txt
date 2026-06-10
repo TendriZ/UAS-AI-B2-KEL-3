@@ -1,0 +1,22 @@
+jadi Sistem Kontrol Pemberian Makan Pada Tambak Udang ini tuh aplikasi untuk mengatur pemberian makan (quantity makanan) untuk meniingkatkan kualitas  dan hasil panen udang
+
+target: owner tambak udang 
+
+knowlaage base 
+- keseharian petambak itu dalam pemberian makanan tiap hatri 
+- jumlah pellet yang dinberikan setiap hati dalam kilogram
+- Waktu pemeberian makan
+- besar dari tambak 
+
+input (sensor)
+alat pendeteksi PH air 
+suhu air
+cuaca
+jumlah udang
+volume air
+
+
+OUTPUT (aktuators):
+- quantity takaran pakan udang
+- jenis udang, kadar hidup udang, usia udang
+- jenis udang (kecil, besar)

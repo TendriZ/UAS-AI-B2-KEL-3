@@ -1,0 +1,26 @@
+{
+  "name": "tambakai",
+  "version": "1.0.0",
+  "description": "TambakAI - Sistem Kontrol Pemberian Makan Pada Tambak Udang",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^17.4.2",
+    "iron-session": "^8.0.1",
+    "joi": "^17.9.2",
+    "jspdf": "^2.5.1",
+    "next": "^15.1.0",
+    "pg": "^8.11.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^15.1.0"
+  }
+}
