@@ -44,29 +44,21 @@
 
 .label {
   display: block;
-
   margin-bottom: 0.75rem;
-
   font-size: 0.95rem;
   font-weight: 600;
-
   color: #334155;
 }
 
 .input {
   width: 100%;
   height: 52px;
-
   padding: 0 1rem;
-
   border: 1px solid #e2e8f0;
   border-radius: 16px;
-
   background: #ffffff;
   color: #1e293b;
-
   font-size: 0.95rem;
-
   transition: all 0.25s ease;
 }
 
@@ -76,26 +68,19 @@
 
 .input:focus {
   outline: none;
-
   border-color: #14b8a6;
-
-  box-shadow:
-    0 0 0 4px rgba(20, 184, 166, 0.12);
+  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12);
 }
 
 .textarea {
   width: 100%;
-
   padding: 1rem;
-
   border: 1px solid #e2e8f0;
   border-radius: 16px;
-
   background: white;
   color: #1e293b;
-
   resize: none;
-
+  min-height: 100px;
   transition: all 0.25s ease;
 }
 
@@ -105,11 +90,8 @@
 
 .textarea:focus {
   outline: none;
-
   border-color: #14b8a6;
-
-  box-shadow:
-    0 0 0 4px rgba(20, 184, 166, 0.12);
+  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12);
 }
 
 .fullWidth {
@@ -119,45 +101,124 @@
 .submitButton {
   width: 100%;
   height: 60px;
-
   border: none;
   border-radius: 18px;
-
   cursor: pointer;
-
   font-size: 1rem;
   font-weight: 700;
-
   color: white;
-
-  background: linear-gradient(
-    135deg,
-    #14b8a6,
-    #0f766e
-  );
-
+  background: linear-gradient(135deg, #14b8a6, #0f766e);
   transition: all 0.25s ease;
 }
 
 .submitButton:hover:not(:disabled) {
   transform: translateY(-2px);
-
-  box-shadow:
-    0 15px 30px rgba(20, 184, 166, 0.25);
+  box-shadow: 0 15px 30px rgba(20, 184, 166, 0.25);
 }
 
 .submitButton:disabled {
   cursor: not-allowed;
-
   background: #94a3b8;
 }
 
+/* Tablet Responsive */
+@media (max-width: 1024px) {
+  .form {
+    gap: 1.5rem;
+  }
+
+  .grid {
+    gap: 1.5rem;
+  }
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
+  .form {
+    gap: 1.25rem;
+  }
+
+  .speciesCard {
+    padding: 1rem;
+    border-radius: 14px;
+  }
+
+  .speciesInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .shrimpEmoji {
+    font-size: 1.5rem;
+  }
+
+  .speciesName {
+    font-size: 1rem;
+  }
+
+  .speciesParams {
+    font-size: 0.8rem;
+  }
+
   .grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .fullWidth {
     grid-column: span 1;
+  }
+
+  .label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .input {
+    height: 50px;
+    padding: 0 0.875rem;
+    font-size: 0.9rem;
+  }
+
+  .textarea {
+    padding: 0.875rem;
+    min-height: 80px;
+  }
+
+  .submitButton {
+    height: 56px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .form {
+    gap: 1rem;
+  }
+
+  .speciesCard {
+    padding: 0.875rem;
+  }
+
+  .shrimpEmoji {
+    font-size: 1.25rem;
+  }
+
+  .input {
+    height: 48px;
+    padding: 0 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .textarea {
+    padding: 0.75rem;
+    min-height: 70px;
+  }
+
+  .submitButton {
+    height: 52px;
+    font-size: 0.9rem;
   }
 }

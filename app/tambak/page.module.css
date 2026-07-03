@@ -17,10 +17,12 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .title {
-  font-size: 2.5rem;
+  font-size: clamp(2rem, 4vw, 2.5rem);
   font-weight: 700;
   color: #0f172a;
 }
@@ -38,6 +40,7 @@
   color: white;
   font-weight: 600;
   transition: 0.3s;
+  white-space: nowrap;
 }
 
 .addButton:hover {
@@ -173,6 +176,8 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .cardTitle {
@@ -201,6 +206,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .volume {
@@ -242,20 +249,159 @@
   transform: translateY(-1px);
 }
 
+/* Tablet Responsive */
+@media (max-width: 1024px) {
+  .container {
+    padding: 32px 20px;
+  }
+
+  .header {
+    margin-bottom: 24px;
+  }
+
+  .formCard {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .emptyState {
+    padding: 48px 24px;
+  }
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
+  .container {
+    padding: 24px 16px;
+  }
+
   .header {
     flex-direction: column;
     align-items: stretch;
     gap: 16px;
+    margin-bottom: 24px;
   }
 
   .title {
-    font-size: 2rem;
+    font-size: 1.75rem;
+  }
+
+  .addButton {
+    width: 100%;
+    text-align: center;
+  }
+
+  .formCard {
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .formTitle {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+  }
+
+  .form {
+    gap: 16px;
+  }
+
+  .input,
+  .textarea {
+    padding: 12px 14px;
+  }
+
+  .formActions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .saveButton,
+  .cancelButton {
+    width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .emptyState {
+    padding: 40px 20px;
+  }
+
+  .card {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .cardTop {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .cardTitle {
+    font-size: 1rem;
   }
 
   .cardBottom {
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 12px;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .editButton,
+  .deleteButton {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .container {
+    padding: 20px 12px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .formCard {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .formTitle {
+    font-size: 1rem;
+  }
+
+  .card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .emptyState {
+    padding: 32px 16px;
+  }
+
+  .icon {
+    font-size: 1.5rem;
+  }
+
+  .editButton,
+  .deleteButton {
+    padding: 8px 12px;
+    font-size: 0.85rem;
   }
 }

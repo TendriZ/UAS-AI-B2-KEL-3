@@ -71,6 +71,7 @@
   color: #64748b;
 }
 
+/* Desktop Menu */
 .menu {
   display: flex;
   align-items: center;
@@ -149,4 +150,224 @@
 
 .secondaryButton:hover {
   background: #f1f5f9;
+}
+
+/* Mobile Menu Button */
+.mobileMenuButton {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 1001;
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 28px;
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #0f172a;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Mobile Menu Panel */
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  max-width: 320px;
+  height: 100vh;
+  background: white;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease;
+  z-index: 999;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileMenu.open {
+  right: 0;
+}
+
+.mobileMenuOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 998;
+}
+
+.mobileMenuOverlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobileMenuBrand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.mobileMenuLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.mobileMenuLink {
+  padding: 1rem;
+  text-decoration: none;
+  font-weight: 500;
+  color: #475569;
+  border-radius: 12px;
+  transition: 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mobileMenuLink:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.mobileMenuLinkIcon {
+  font-size: 1.25rem;
+}
+
+.mobileMenuDivider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 1rem 0;
+}
+
+.mobileMenuActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: none;
+}
+
+.closeButton span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #0f172a;
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+
+.closeButton span:last-child {
+  transform: rotate(-45deg);
+  margin-top: -2px;
+}
+
+/* Tablet Responsive */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .title {
+    font-size: 1.1rem;
+  }
+
+  .subtitle {
+    display: none;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .wrapper {
+    height: 64px;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+
+  /* Hide desktop menu */
+  .menu {
+    display: none;
+  }
+
+  /* Show mobile menu button */
+  .mobileMenuButton {
+    display: block;
+  }
+
+  /* Show close button in mobile menu */
+  .closeButton {
+    display: block;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+
+  .wrapper {
+    height: 60px;
+  }
+
+  .brand {
+    gap: 0.75rem;
+  }
+
+  .logo {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .title {
+    font-size: 0.95rem;
+  }
+
+  .mobileMenu {
+    max-width: 280px;
+    padding: 1.5rem;
+  }
 }
