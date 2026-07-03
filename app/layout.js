@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "TambakAI - Sistem Kontrol Pemberian Makan Pada Tambak Udang",
+  title: "Si Tambak - Sistem Kontrol Pemberian Makan Pada Tambak Udang",
   description: "AI-powered shrimp farm feeding control system using fuzzy logic",
 };
 

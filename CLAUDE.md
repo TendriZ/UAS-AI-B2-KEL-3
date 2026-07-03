@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**TambakAI** is an AI-powered shrimp farm feeding control system (Sistem Kontrol Pemberian Makan Pada Tambak Udang). The application helps shrimp farm owners optimize feed quantity and timing to improve harvest quality and yields.
+**Si Tambak** is an AI-powered shrimp farm feeding control system (Sistem Kontrol Pemberian Makan Pada Tambak Udang). The application helps shrimp farm owners optimize feed quantity and timing to improve harvest quality and yields.
 
 ### Target Users
 Shrimp farm owners (petambak udang) who need daily feeding recommendations.
@@ -137,7 +137,7 @@ npm install jspdf    # Add PDF export library
 
 ## Development Notes
 
-- The project is in early development stage - transitioning from default create-next-app template to TambakAI implementation
+- The project is in early development stage - transitioning from default create-next-app template to Si Tambak implementation
 - All code uses JavaScript (not TypeScript)
 - Component-level styling uses CSS Modules (`*.module.css`)
 - ESLint is configured with Next.js core-web-vitals preset

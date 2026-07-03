@@ -1,10 +1,10 @@
-# Database Design Documentation - TambakAI
+# Database Design Documentation - Si Tambak
 
-Documentation for Conceptual Data Model (CDM) and Physical Data Model (PDM) of the TambakAI system.
+Documentation for Conceptual Data Model (CDM) and Physical Data Model (PDM) of the Si Tambak system.
 
 ## 📊 Overview
 
-TambakAI database consists of 6 main tables:
+Si Tambak database consists of 6 main tables:
 - **users** - User authentication and profiles
 - **tambak** - Shrimp pond information (with soft delete)
 - **species_types** - Master data for **Vannamei** shrimp parameters

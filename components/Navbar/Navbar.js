@@ -59,7 +59,7 @@ export default function Navbar() {
 
               <div>
                 <h1 className={styles.title}>
-                  TambakAI
+                  Si Tambak
                 </h1>
 
                 <p className={styles.subtitle}>
@@ -162,7 +162,7 @@ export default function Navbar() {
             🦐
           </div>
           <div>
-            <h1 className={styles.title}>TambakAI</h1>
+            <h1 className={styles.title}>Si Tambak</h1>
           </div>
         </div>
 

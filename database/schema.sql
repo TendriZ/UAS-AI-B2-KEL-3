@@ -1,5 +1,5 @@
 -- ============================================
--- TambakAI Database Schema (Optimized & Production-Ready)
+-- Si Tambak Database Schema (Optimized & Production-Ready)
 -- Version: 2.0
 -- ============================================
 

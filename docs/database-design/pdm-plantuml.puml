@@ -1,8 +1,8 @@
-@startuml PDM-TambakAI
+@startuml PDM-Si Tambak
 !theme plain
 hide empty members
 
-title Physical Data Model (PDM) - TambakAI PostgreSQL
+title Physical Data Model (PDM) - Si Tambak PostgreSQL
 subtitle Database Schema v2.0 - Vannamei Only
 
 ' ============================================

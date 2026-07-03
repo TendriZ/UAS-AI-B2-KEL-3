@@ -55,7 +55,7 @@ export default function HistoryPage() {
     const doc = new jsPDF();
 
     doc.setFontSize(20);
-    doc.text('Rekomendasi Pakan TambakAI', 20, 20);
+    doc.text('Rekomendasi Pakan Si Tambak', 20, 20);
 
     doc.setFontSize(12);
     doc.text(`Tanggal: ${new Date(rec.created_at).toLocaleDateString('id-ID')}`, 20, 30);
@@ -90,7 +90,7 @@ export default function HistoryPage() {
 
           <p className={styles.subtitle}>
             Seluruh rekomendasi pakan yang pernah
-            dibuat oleh sistem TambakAI.
+            dibuat oleh sistem Si Tambak.
           </p>
         </div>
 

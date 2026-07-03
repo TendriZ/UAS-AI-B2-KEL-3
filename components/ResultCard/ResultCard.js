@@ -9,7 +9,7 @@ export default function ResultCard({ data }) {
 
     // Title
     doc.setFontSize(20);
-    doc.text('Rekomendasi Pakan TambakAI', 20, 20);
+    doc.text('Rekomendasi Pakan Si Tambak', 20, 20);
 
     // Date
     doc.setFontSize(12);

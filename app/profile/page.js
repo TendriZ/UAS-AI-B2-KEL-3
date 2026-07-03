@@ -91,7 +91,7 @@ export default function ProfilePage() {
             </h1>
 
             <p className={styles.subtitle}>
-              Kelola informasi akun TambakAI Anda
+              Kelola informasi akun Si Tambak Anda
             </p>
           </div>
         </div>

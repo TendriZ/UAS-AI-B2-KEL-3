@@ -1,7 +1,7 @@
 {
   "name": "tambakai",
   "version": "1.0.0",
-  "description": "TambakAI - Sistem Kontrol Pemberian Makan Pada Tambak Udang",
+  "description": "Si Tambak - Sistem Kontrol Pemberian Makan Pada Tambak Udang",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

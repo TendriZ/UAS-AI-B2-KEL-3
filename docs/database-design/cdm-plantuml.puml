@@ -1,8 +1,8 @@
-@startuml CDM-TambakAI
+@startuml CDM-Si Tambak
 !theme plain
 hide empty members
 
-title Conceptual Data Model (CDM) - TambakAI
+title Conceptual Data Model (CDM) - Si Tambak
 subtitle Sistem Kontrol Pemberian Makan Pada Tambak Udang Vannamei
 
 ' ============================================

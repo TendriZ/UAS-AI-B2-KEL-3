@@ -1,5 +1,5 @@
 /**
- * Database Setup Script for TambakAI
+ * Database Setup Script for Si Tambak
  * Run this with: node scripts/setup-db.js
  */
 

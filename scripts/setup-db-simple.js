@@ -1,5 +1,5 @@
 /**
- * Simple Database Setup Script for TambakAI
+ * Simple Database Setup Script for Si Tambak
  * Creates database, user, and tables automatically
  * Run: node scripts/setup-db-simple.js
  */

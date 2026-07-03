@@ -1,9 +1,9 @@
-@startuml ERD-TambakAI-Simple
+@startuml ERD-Si Tambak-Simple
 !theme plain
 hide empty members
 skinparam linetype ortho
 
-title ERD - TambakAI (Simplified)
+title ERD - Si Tambak (Simplified)
 subtitle Entity Relationship Diagram
 
 entity "USERS" as u {

@@ -68,7 +68,7 @@ export default function DashboardPage() {
         <section className={styles.hero}>
           <div>
             <span className={styles.badge}>
-              TambakAI Dashboard
+              Si Tambak Dashboard
             </span>
 
             <h1 className={styles.heroTitle}>

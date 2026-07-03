@@ -47,7 +47,7 @@ export default function Home() {
       <div className={styles.container}>
         <div className={styles.hero}>
           <h1 className={styles.title}>
-            🦐 TambakAI
+            🦐 Si Tambak
           </h1>
 
           <p className={styles.subtitle}>
